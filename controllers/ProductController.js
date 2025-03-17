@@ -12,19 +12,12 @@ export async function addProduct(req, res) {
         })
     }
 
-    try {
-        const product = await db.Product.create(req.body)
+    const product = await db.Product.create(req.body)
 
-        return res.status(201).json({
-            message: "Add product successfully!",
-            data: product
-        })
-    } catch(error) {
-        return res.status(500).json({
-            message: "Error occurs when adding product",
-            error: error.errors[0]?.message
-        })
-    }
+    return res.status(201).json({
+        message: "Add product successfully!",
+        data: product
+    })
 }
 
 export async function getAllProducts(req, res) {
