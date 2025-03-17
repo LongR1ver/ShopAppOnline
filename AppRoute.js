@@ -5,12 +5,14 @@ import * as BrandController from './controllers/BrandController'
 import * as OrderController from './controllers/OrderController'
 import * as OrderDetailsController from './controllers/OrderDetailsController'
 import asyncHandler from './middlewares/asyncHandler'
+import validate from './middlewares/validate'
+import InsertProductRequest from './dtos/requests/InsertProductRequest'
 
 const router = express.Router()
 
 export function AppRoute(app) {
     // http://localhost:3000/api/products
-    router.post('/products', asyncHandler(ProductController.addProduct));
+    router.post('/products', validate(InsertProductRequest), asyncHandler(ProductController.addProduct));
     router.get('/products', asyncHandler(ProductController.getAllProducts));
     router.get('/products/:id', asyncHandler(ProductController.getProductByID));
     router.put('/products/:id', asyncHandler(ProductController.updateProduct));
