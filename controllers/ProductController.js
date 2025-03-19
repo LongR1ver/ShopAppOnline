@@ -23,14 +23,14 @@ export async function getAllProducts(req, res) {
     if(search.trim() !== '') {
         whereClause = {
             [Op.or]: [
-                { name: { [Op.like]: `%${search}` } },
-                { description: { [Op.like]: `%${search}` } },
-                { specification: { [Op.like]: `%${search}` } }
+                { name: { [Op.iLike]: `%${search}%` } },
+                { description: { [Op.iLike]: `%${search}%` } },
+                { specification: { [Op.iLike]: `%${search}%` } }
             ]
         }
     }
 
-    const [products, totalProducts] = Promise.all([
+    const [products, totalProducts] = await Promise.all([
         db.Product.findAll({
             where: whereClause,
             limit: pageSize,
@@ -41,7 +41,7 @@ export async function getAllProducts(req, res) {
         })
     ])
 
-    res.status(200).json({
+    return res.status(200).json({
         message: "Get all products successfully!",
         data: products,
         currentPage: parseInt(page, 10),

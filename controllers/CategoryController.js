@@ -1,31 +1,65 @@
 import { Sequelize } from "sequelize"
 import db from "../models"
 
-export async function addCategory(req, res) {
-    try {
-        const category = await db.Category.create(req.body)
+const { Op } = Sequelize
 
-        return res.status(201).json({
-            message: "Add category successfully!",
-            data: category
-        })
-    } catch(error) {
-        return res.status(500).json({
-            message: "Error occurs when adding category",
-            error: error.message
-        })
-    }
+export async function addCategory(req, res) {
+    const category = await db.Category.create(req.body)
+
+    return res.status(201).json({
+        message: "Add category successfully!",
+        data: category
+    })
 }
 
 export async function getAllCategories(req, res) {
-    res.status(200).json({
-        message: "Get all categories successfully!"
+    const { search = '', page = 1 } = req.query // default to an empty search and first page if not specified
+    const pageSize = 10 // number of items per page
+    const offset = (page - 1) * pageSize // offset is used to skip previous page items
+
+    let whereClause = {}
+
+    if(search.trim() !== '') {
+        whereClause = {
+            [Op.or]: [
+                { name: { [Op.iLike]: `%${search}%` } }
+            ]
+        }
+    }
+
+    const [categories, totalCategories] = await Promise.all([
+        db.Category.findAll({
+            where: whereClause,
+            limit: pageSize,
+            offset: offset
+        }),
+        db.Category.count({
+            where: whereClause
+        })
+    ])
+
+    return res.status(200).json({
+        message: "Get all categories successfully!",
+        data: categories,
+        currentPage: parseInt(page, 10),
+        totalPages: Math.ceil(totalCategories/pageSize),
+        totalCategories
     })
 }
 
 export async function getCategoryByID(req, res) {
-    res.status(200).json({
-        message: "Get category by ID successfully!"
+    const {id} = req.params
+    const category = await db.Category.findByPk(id)
+
+    if(!category) {
+        return res.status(404).json({
+            message: "Category not found"
+        })
+    }
+
+    return res.status(200).json({
+        message: "Get category by ID successfully!",
+        data: category
     })
 }
 
