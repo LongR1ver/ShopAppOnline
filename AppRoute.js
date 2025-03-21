@@ -7,6 +7,7 @@ import * as OrderDetailsController from './controllers/OrderDetailsController'
 import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
 import InsertProductRequest from './dtos/requests/InsertProductRequest'
+import UpdateProductRequest from './dtos/requests/UpdateProductRequest'
 
 const router = express.Router()
 
@@ -15,7 +16,7 @@ export function AppRoute(app) {
     router.post('/products', validate(InsertProductRequest), asyncHandler(ProductController.addProduct));
     router.get('/products', asyncHandler(ProductController.getAllProducts));
     router.get('/products/:id', asyncHandler(ProductController.getProductByID));
-    router.put('/products/:id', asyncHandler(ProductController.updateProduct));
+    router.put('/products/:id', validate(UpdateProductRequest), asyncHandler(ProductController.updateProduct));
     router.delete('/products/:id', asyncHandler(ProductController.deleteProduct));
 
     // http://localhost:3000/api/categories

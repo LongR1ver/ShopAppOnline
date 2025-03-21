@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize"
 import db from "../models"
-import InsertProductRequest from "../dtos/requests/InsertProductRequest"
 
 const { Op } = Sequelize
 
@@ -57,7 +56,7 @@ export async function getProductByID(req, res) {
 
     if (!product) {
         return res.status(404).json({
-            message: "Product not found"
+            message: "Product not found!"
         })
     }
 
@@ -68,13 +67,35 @@ export async function getProductByID(req, res) {
 }
 
 export async function updateProduct(req, res) {
-    res.status(200).json({
-        message: "Update product successfully!"
+    const { id } = req.params
+    const updatedProduct = await db.Product.update(req.body, {
+        where: {id}
     })
+
+    if(updatedProduct[0] > 0) { // the first element of the array updatedProduct is the number of affected rows
+        return res.status(200).json({
+            message: "Update product successfully!"
+        })
+    } else {
+        return res.status(404).json({
+            message: "Product not found!"
+        })
+    }
 }
 
 export async function deleteProduct(req, res) {
-    res.status(200).json({
-        message: "Delete product successfully!"
+    const { id } = req.params
+    const deleted = await db.Product.destroy({
+        where: {id}
     })
+
+    if(deleted) {
+        return res.status(200).json({
+            message: "Delete product successfully!"
+        })
+    } else {
+        return res.status(404).json({
+            message: "Product not found!"
+        })
+    }
 }
