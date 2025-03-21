@@ -6,8 +6,8 @@ import * as OrderController from './controllers/OrderController'
 import * as OrderDetailsController from './controllers/OrderDetailsController'
 import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
-import InsertProductRequest from './dtos/requests/InsertProductRequest'
-import UpdateProductRequest from './dtos/requests/UpdateProductRequest'
+import InsertProductRequest from './dtos/requests/product/InsertProductRequest'
+import UpdateProductRequest from './dtos/requests/product/UpdateProductRequest'
 
 const router = express.Router()
 
