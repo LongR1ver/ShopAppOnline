@@ -48,7 +48,7 @@ export async function getAllCategories(req, res) {
 }
 
 export async function getCategoryByID(req, res) {
-    const {id} = req.params
+    const { id } = req.params
     const category = await db.Category.findByPk(id)
 
     if(!category) {
@@ -67,16 +67,16 @@ export async function updateCategory(req, res) {
     const { id } = req.params;
     const updatedCategory = await db.Category.update(req.body, {
         where: { id }
-    });
+    })
 
     if (updatedCategory[0] > 0) {
         return res.status(200).json({
             message: "Update category successfully!"
-        });
+        })
     } else {
         return res.status(404).json({
             message: "Category not found!"
-        });
+        })
     }
 }
 
@@ -84,15 +84,15 @@ export async function deleteCategory(req, res) {
     const { id } = req.params;
     const deleted = await db.Category.destroy({
         where: { id }
-    });
+    })
 
     if (deleted) {
         return res.status(200).json({
             message: "Delete category successfully!"
-        });
+        })
     } else {
         return res.status(404).json({
             message: "Category not found!"
-        });
+        })
     }
 }

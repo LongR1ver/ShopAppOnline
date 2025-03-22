@@ -4,19 +4,12 @@ import db from "../models"
 const { Op } = Sequelize
 
 export async function addBrand(req, res) {
-    try {
-        const brand = await db.Brand.create(req.body)
+    const brand = await db.Brand.create(req.body)
 
-        res.status(201).json({
-            message: "Add brand successfully!",
-            data: brand
-        })
-    } catch(error) {
-        res.status(500).json({
-            message: "Error occurs when adding brand",
-            error: error.message
-        })
-    }
+    return res.status(201).json({
+        message: "Add brand successfully!",
+        data: brand
+    })
 }
 
 export async function getAllBrands(req, res) {
@@ -51,11 +44,11 @@ export async function getAllBrands(req, res) {
         currentPage: parseInt(page, 10),
         totalPages: Math.ceil(totalBrands/pageSize),
         totalBrands
-    });
+    })
 }
 
 export async function getBrandByID(req, res) {
-    const {id} = req.params
+    const { id } = req.params
     const brand = await db.Brand.findByPk(id)
 
     if(!brand) {
@@ -67,23 +60,23 @@ export async function getBrandByID(req, res) {
     return res.status(200).json({
         message: "Get brand by ID successfully!",
         brand
-    });
+    })
 }
 
 export async function updateBrand(req, res) {
     const { id } = req.params;
     const updatedBrand = await db.Brand.update(req.body, {
         where: { id }
-    });
+    })
 
     if (updatedBrand[0] > 0) {
         return res.status(200).json({
             message: "Update brand successfully!"
-        });
+        })
     } else {
         return res.status(404).json({
             message: "Brand not found!"
-        });
+        })
     }
 }
 
@@ -91,15 +84,15 @@ export async function deleteBrand(req, res) {
     const { id } = req.params;
     const deleted = await db.Brand.destroy({
         where: { id }
-    });
+    })
 
     if (deleted) {
         return res.status(200).json({
             message: "Delete brand successfully!"
-        });
+        })
     } else {
         return res.status(404).json({
             message: "Brand not found!"
-        });
+        })
     }
 }

@@ -51,7 +51,7 @@ export async function getAllProducts(req, res) {
 
 export async function getProductByID(req, res) {
     //const productId = req.params.id
-    const {id} = req.params
+    const { id } = req.params
     const product = await db.Product.findByPk(id)
 
     if (!product) {
@@ -69,7 +69,7 @@ export async function getProductByID(req, res) {
 export async function updateProduct(req, res) {
     const { id } = req.params
     const updatedProduct = await db.Product.update(req.body, {
-        where: {id}
+        where: { id }
     })
 
     if(updatedProduct[0] > 0) { // the first element of the array updatedProduct is the number of affected rows
@@ -86,7 +86,7 @@ export async function updateProduct(req, res) {
 export async function deleteProduct(req, res) {
     const { id } = req.params
     const deleted = await db.Product.destroy({
-        where: {id}
+        where: { id }
     })
 
     if(deleted) {
