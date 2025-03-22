@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-class InsertProductRequest {
+class AddProductRequest {
     constructor(data) {
         this.name = data.name
         this.price = data.price
@@ -32,4 +32,4 @@ class InsertProductRequest {
     }
 }
 
-export default InsertProductRequest
+export default AddProductRequest
