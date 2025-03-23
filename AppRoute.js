@@ -8,6 +8,7 @@ import asyncHandler from './middlewares/asyncHandler'
 import validate from './middlewares/validate'
 import AddProductRequest from './dtos/requests/product/AddProductRequest'
 import UpdateProductRequest from './dtos/requests/product/UpdateProductRequest'
+import AddOrderRequest from './dtos/requests/order/AddOrderRequest'
 
 const router = express.Router()
 
@@ -34,7 +35,7 @@ export function AppRoute(app) {
     router.delete('/brands/:id', asyncHandler(BrandController.deleteBrand));
 
     // http://localhost:3000/api/orders
-    router.post('/orders', asyncHandler(OrderController.addOrder));
+    router.post('/orders', validate(AddOrderRequest), asyncHandler(OrderController.addOrder));
     router.get('/orders', asyncHandler(OrderController.getAllOrders));
     router.get('/orders/:id', asyncHandler(OrderController.getOrderByID));
     router.put('/orders/:id', asyncHandler(OrderController.updateOrder));
