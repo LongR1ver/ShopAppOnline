@@ -1,4 +1,5 @@
 import express from 'express'
+import * as UserController from './controllers/UserController'
 import * as ProductController from './controllers/ProductController'
 import * as CategoryController from './controllers/CategoryController'
 import * as BrandController from './controllers/BrandController'
@@ -9,10 +10,14 @@ import validate from './middlewares/validate'
 import AddProductRequest from './dtos/requests/product/AddProductRequest'
 import UpdateProductRequest from './dtos/requests/product/UpdateProductRequest'
 import AddOrderRequest from './dtos/requests/order/AddOrderRequest'
+import AddUserRequest from './dtos/requests/user/AddUserRequest'
 
 const router = express.Router()
 
 export function AppRoute(app) {
+    // http://localhost:3000/api/users
+    router.post('/users', validate(AddUserRequest), asyncHandler(UserController.addUser));
+
     // http://localhost:3000/api/products
     router.post('/products', validate(AddProductRequest), asyncHandler(ProductController.addProduct));
     router.get('/products', asyncHandler(ProductController.getAllProducts));

@@ -1,20 +1,29 @@
 import Joi from "joi"
-import bcrypt from "bcryptjs"
+import { string } from "joi"
+//import bcrypt from "bcryptjs"
 
 class AddUserRequest {
     constructor(data) {
-        this.userId = data.userId
-        this.status = data.status
-        this.note = data.note
-        this.total = data.total
+        this.email = data.email
+        this.password = this.encryptPassword(data.password)
+        this.name = data.name
+        this.role = data.role
+        this.avatar = data.avatar
+        this.phone = data.phone
+    }
+
+    encryptPassword(password) {
+        return "Fake hash password"
     }
 
     static validate(data) {
         const schema = Joi.object({
-            userId: Joi.number().integer().required(),
-            status: Joi.number().integer().min(1).required(),
-            note: Joi.string().optional().allow(''),
-            total: Joi.number().min(0).required()
+            email: Joi.string().email().required(),
+            password: Joi.string().min(6).required(),
+            name: Joi.string().required(),
+            role: Joi.number().integer().min(1).required(),
+            avatar: Joi.string().uri().allow('').optional(),
+            phone: Joi.string().optional()
         })
 
         return schema.validate(data) // return {error, value}
