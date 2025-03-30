@@ -2,6 +2,15 @@ import { Sequelize } from "sequelize"
 import db from "../models"
 
 export async function addOrder(req, res) {
+    const userId = req.body.userId
+    const user = await db.User.findByPk(userId)
+
+    if(!user) {
+        return res.status(404).json({
+            message: "User not found!"
+        })
+    }
+
     const order = await db.Order.create(req.body)
 
     return res.status(201).json({
@@ -13,13 +22,13 @@ export async function addOrder(req, res) {
 export async function getAllOrders(req, res) {
     res.status(200).json({
         message: "Get all orders successfully!"
-    });
+    })
 }
 
 export async function getOrderByID(req, res) {
     res.status(200).json({
         message: "Get order by ID successfully!"
-    });
+    })
 }
 
 export async function updateOrder(req, res) {

@@ -1,6 +1,4 @@
 import Joi from "joi"
-import { string } from "joi"
-//import bcrypt from "bcryptjs"
 
 class AddUserRequest {
     constructor(data) {
@@ -20,7 +18,8 @@ class AddUserRequest {
         const schema = Joi.object({
             email: Joi.string().email().required(),
             password: Joi.string().min(6).required(),
-            name: Joi.string().required(),
+            firstName: Joi.string().required(),
+            lastName: Joi.string().required(),
             role: Joi.number().integer().min(1).required(),
             avatar: Joi.string().uri().allow('').optional(),
             phone: Joi.string().optional()

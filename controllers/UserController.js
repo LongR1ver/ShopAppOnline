@@ -11,3 +11,20 @@ export async function addUser(req, res) {
         data: user
     })
 }
+
+export async function updateUser(req, res) {
+    const { id } = req.params
+    const updatedUser = await db.User.update(req.body, {
+        where: id
+    })
+
+    if(updatedUser) {
+        return res.status(200).json({
+            message: "Updated user successfully!"
+        })
+    } else {
+        return res.status(404).json({
+            message: "User not found!"
+        })
+    }
+}
