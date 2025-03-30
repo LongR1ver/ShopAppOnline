@@ -1,14 +1,30 @@
 import { Sequelize } from "sequelize"
 import db from "../models"
+import ResponseUser from "../dtos/responses/user/ResponseUser"
+import AddUserRequest from "../dtos/requests/user/AddUserRequest"
+import argon2 from "argon2"
 
 const { Op } = Sequelize
 
 export async function addUser(req, res) {
-    const user = await db.User.create(req.body)
+    const existingUser = await db.User.findOne({
+        where: {
+            email: req.body.email
+        }
+    })
+
+    if(existingUser) {
+        return res.status(409).json({
+            message: "Email existed!"
+        })
+    }
+
+    const hashedPassword = await argon2.hash(req.body.password)
+    const user = await db.User.create({...req.body, password: hashedPassword}) // ...req.body: duplicate req.body so that we do not modify input values
 
     return res.status(201).json({
         message: "Create new user successfully!",
-        data: user
+        data: new ResponseUser(user)
     })
 }
 

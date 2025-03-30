@@ -3,9 +3,9 @@ import db from "../models"
 
 export async function addOrder(req, res) {
     const userId = req.body.userId
-    const user = await db.User.findByPk(userId)
+    const userExisted = await db.User.findByPk(userId)
 
-    if(!user) {
+    if(!userExisted) {
         return res.status(404).json({
             message: "User not found!"
         })

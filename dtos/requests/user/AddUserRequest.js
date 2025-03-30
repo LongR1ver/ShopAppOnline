@@ -3,15 +3,12 @@ import Joi from "joi"
 class AddUserRequest {
     constructor(data) {
         this.email = data.email
-        this.password = this.encryptPassword(data.password)
-        this.name = data.name
+        this.password = data.password
+        this.firstName = data.firstName
+        this.lastName = data.lastName
         this.role = data.role
         this.avatar = data.avatar
         this.phone = data.phone
-    }
-
-    encryptPassword(password) {
-        return "Fake hash password"
     }
 
     static validate(data) {
