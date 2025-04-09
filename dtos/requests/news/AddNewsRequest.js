@@ -12,7 +12,7 @@ class AddNewsRequest {
         const schema = Joi.object({
             title: Joi.string().required(),
             image: Joi.string().uri().allow('', null),
-            content: Joi.string().required(''),
+            content: Joi.string().required(),
             productIds: Joi.array().items(Joi.number().integer()).optional()
         })
 

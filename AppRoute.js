@@ -15,6 +15,7 @@ import AddOrderRequest from './dtos/requests/order/AddOrderRequest'
 import AddUserRequest from './dtos/requests/user/AddUserRequest'
 import AddNewsRequest from './dtos/requests/news/AddNewsRequest'
 import AddNewsDetailsRequest from './dtos/requests/news details/AddNewsDetailsRequest'
+import UpdateNewsRequest from './dtos/requests/news/UpdateNewsRequest'
 
 const router = express.Router()
 
@@ -61,7 +62,7 @@ export function AppRoute(app) {
     router.post('/news', validate(AddNewsRequest), asyncHandler(NewsController.addNews))
     router.get('/news', asyncHandler(NewsController.getAllNews))
     router.get('/news/:id', asyncHandler(NewsController.getNewsByID))
-    router.put('/news/:id', asyncHandler(NewsController.updateNews))
+    router.put('/news/:id', validate(UpdateNewsRequest), asyncHandler(NewsController.updateNews))
     router.delete('/news/:id', asyncHandler(NewsController.deleteNews))
 
     // http://localhost:3000/api/news-details
